@@ -7,6 +7,8 @@ $db = "photoalbum";
 
 $con = mysqli_connect($server,$user,$password,$db);
 
+// $con = mysqli_connect("localhost","root","","photoalbum");
+
 if($con)
 {
     ?>

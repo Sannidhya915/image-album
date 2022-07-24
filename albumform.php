@@ -12,8 +12,28 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <body>
-<?php    include 'dbcon.php';
+<?php    
+    include 'dbcon.php';
+
+    if (isset($_POST['create'])) {
+        include 'dbcon.php';
+        function create_album()
+        {
+            $name=$_POST['albumname'];
+            $desc=$_POST['description'];
+            $type=$_POST['user_type'];
+
+            //Query add created album to db
+            $con = mysqli_connect("localhost","root","","photoalbum");
+            $sql = "INSERT INTO album(name,description,user_type) VALUES('$name','$desc','$type')";
+            $query = mysqli_query($con,$sql);
+        }
+        create_album();
+    }
+        
+
 ?>
+    <form action="#" method="post">
     <div class="form-check">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
         <label class="form-check-label" for="flexRadioDefault1">
@@ -21,57 +41,43 @@
         </label>
         <div class="newalbum">    
         <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">Album Name</span>
-        <input type="text" class="form-control" placeholder="Album Name" aria-label="Username" aria-describedby="basic-addon1">
+        <span class="input-group-text" id="adbumname">Album Name</span>
+        <input type="text" name="albumname" class="form-control" placeholder="Album Name" aria-label="Username" aria-describedby="adbumname">
         </div>
 
         <div class="input-group">
         <span class="input-group-text">Description</span>
-        <textarea class="form-control" aria-label="With textarea"></textarea>
+        <textarea name="description" class="form-control" aria-label="With textarea"></textarea>
         </div>
         <br>
-        <div class="input-group mb-3">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">User Type</button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Admin</a></li>
-            <li><a class="dropdown-item" href="#">Premium User</a></li>
-            <li><a class="dropdown-item" href="#">User</a></li>
+            <label>User Type</label>
+        <select name="user_type">
+            <option selected="selected">Album</option>
+            <li><option class="dropdown-item">Admin</option></li>
+            <li><option class="dropdown-item">Premium User</option></li>
+            <li><option class="dropdown-item">User</option></li>        
+        </select>
         </ul>
-        </div> 
+
+
+        <input type="submit" class="btn-sm btn-primary btn-lg" name="create" value="Create">
+
+        <!-- <button class="btn-sm btn-primary btn-lg" onclick="create()"> Create </button> -->
 
         </div>
     </div>
+
 
 
     <div class="form-check">
         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
         <label class="form-check-label" for="flexRadioDefault2">
-            Add to Existing
+            Select Album
         </label>
 
-        <div class="exalbum">
-            <label>Select Existing Album</label>
-            <select name="Sidenavbar">
-            <option selected="selected">Album</option>
-        <?php
-            // <li><a class="dropdown-item" href="#">Action</a></li>
-            // <li><a class="dropdown-item" href="#">Another action</a></li>
-            // <li><a class="dropdown-item" href="#">Something else here</a></li>
-
-            $sql = "SELECT name FROM album";
-            $query = mysqli_query($con,$sql);
-            $result = mysqli_fetch_assoc($query);
-            // var_dump($result);
-            foreach($result as $value)
-                echo '<li><option class="dropdown-item">'.$value.'</option></li>';
-                
-                ?>
-            </select>
-        </ul>
-        </div> 
     </div>
     </div>
-
+</form>
 
 <script>
 
@@ -88,8 +94,9 @@ $(document).ready(function(){
     $(".newalbum").hide(500);
     $(".exalbum").show(500);
     });
-
- });  
+    
+ });
+ 
 
 </script>
 
